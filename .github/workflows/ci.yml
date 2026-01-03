@@ -1,0 +1,50 @@
+# GitHub Actions 工作流配置文件
+# 这是一个最简单的 CI/CD 示例，用于教学
+
+# 工作流的名称，会显示在 GitHub Actions 标签页
+name: 简单 CI
+
+# 触发条件：什么时候运行这个 workflow
+on:
+  # 当代码推送到 main 分支时触发
+  push:
+    branches: [ main ]
+  # 当有人创建 Pull Request 到 main 分支时触发
+  pull_request:
+    branches: [ main ]
+
+# 定义要执行的任务（jobs）
+jobs:
+  # 任务名称：构建
+  build:
+    # 运行环境：使用 Ubuntu 最新版本
+    runs-on: ubuntu-latest
+
+    # 任务中的具体步骤
+    steps:
+      # 步骤 1: 检出代码
+      # 使用 GitHub 官方的 checkout action 将代码下载到运行环境
+      - name: 检出代码
+        uses: actions/checkout@v4
+
+      # 步骤 2: 设置 Node.js 环境
+      # 使用 GitHub 官方的 setup-node action 安装 Node.js
+      - name: 设置 Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'  # 使用 Node.js 20 版本
+
+      # 步骤 3: 安装依赖
+      # 运行 npm install 安装项目所需的所有依赖包
+      - name: 安装依赖
+        run: npm install
+
+      # 步骤 4: 构建项目
+      # 运行 npm run build 构建生产版本
+      - name: 构建项目
+        run: npm run build
+
+      # 步骤 5: 显示成功消息
+      # 这是一个简单的 shell 命令示例
+      - name: 完成
+        run: echo "🎉 构建成功！"
