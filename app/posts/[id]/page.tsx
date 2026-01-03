@@ -10,8 +10,9 @@ export async function generateStaticParams() {
   }))
 }
 
-export default function PostPage({ params }: { params: { id: string } }) {
-  const post = getPostById(params.id)
+export default async function PostPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params
+  const post = getPostById(id)
 
   // 如果文章不存在，返回 404
   if (!post) {
